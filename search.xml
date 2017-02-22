@@ -3,6 +3,13 @@
   
     
     <entry>
+      <title><![CDATA[前端限制form表单多次提交]]></title>
+      <url>%2F2017%2F02%2F12%2F%E5%89%8D%E7%AB%AF%E9%99%90%E5%88%B6form%E8%A1%A8%E5%8D%95%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4%2F</url>
+      <content type="text"><![CDATA[##问题描述今天做东西的时候，由于网络卡，在提交表单数据的时候，多点击了几下，结果发现数据库添加了多条同样的数据 ##解决办法在form表单提交之后，给button按钮追加一个’disabled‘的元素，让它呈现不可点击的状态，这样就只能点击一次了。 $(function () { $(&apos;form&apos;).submit(function() { $(&apos;button&apos;).attr(&apos;disabled&apos;,&apos;disabled&apos;); }); })]]></content>
+    </entry>
+
+    
+    <entry>
       <title><![CDATA[markdown for win10 安装没法预览解决办法]]></title>
       <url>%2F2017%2F01%2F18%2Fmarkdown%20for%20win10%20%E5%AE%89%E8%A3%85%E6%B2%A1%E6%B3%95%E9%A2%84%E8%A7%88%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95%2F</url>
       <content type="text"><![CDATA[author: Fengyafeng关于markdown for win10安装后没法预览的问题，如下图： 解决办法：安装Awesomium 1.6.6 SDK,就可以解决。如果还是不行，那就在安装一下 Microsoft’s DirectX End-User Runtimes (June 2010)就可以解决markdown在Win0上不能预览的问题了。]]></content>
