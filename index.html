@@ -402,96 +402,14 @@
 
       
         
-          
-            <h2 id="手机端php上传图片"><a href="#手机端php上传图片" class="headerlink" title="手机端php上传图片"></a>手机端php上传图片</h2><p>这里给大家介绍一款非常实用的JQuery图片上传预览插件<strong>uploadView</strong>，这款插件不仅可以兼容手机和PC，而且代买非常的简介明了。本人就是在项目中，用这款插件来做头像的更改上传的。</p>
-<h3 id="1-HTML"><a href="#1-HTML" class="headerlink" title="1.HTML:"></a>1.HTML:</h3><p>这是JQuery的一个插件，所以在使用前，先引入<strong>jquery.min.js</strong>，这里就引入你项目的jquery.min.js地址就可以啦。然后就是提交地址了，在这里需要注意的是，在form表单提交时，要加入<strong>enctype=”multipart/form-data”</strong>。<strong>img:src</strong>就是预览图片的地址，在未上传时，这里显示之前的图片，所以要从后台分配过来原来的图片地址。</p>
-<blockquote>
-<pre><code>&lt;script src=&quot;__PUBLIC__/js/jquery.min.js&quot;&gt;&lt;/script&gt;
-&lt;form action=&quot;{:U(GROUP_NAME. &apos;/Setting/run_setting_account&apos;)}&quot; enctype=&quot;multipart/form-data&quot; method=&quot;post&quot;&gt;
-&lt;div class=&quot;btn-upload&quot;&gt;
-    &lt;a href=&quot;javascript:void(0);&quot;&gt;
-        &lt;!--图片预览 --&gt;
-        &lt;div class=&quot;js_showBox&quot;&gt;
-            &lt;img class=&quot;js_logoBox&quot; src=&quot;{$userinfo[&apos;cover&apos;]}&quot; width=&quot;50&quot; height=&quot;50&quot;&gt;
-        &lt;/div&gt;
-      &lt;/a&gt;
-      &lt;input class=&quot;js_upFile&quot; type=&quot;file&quot; name=&quot;cover&quot;&gt;
-&lt;/div&gt;
-&lt;/form&gt;
-</code></pre></blockquote>
-<h3 id="2-CSS"><a href="#2-CSS" class="headerlink" title="2.CSS:"></a>2.CSS:</h3><p>这里是重写了上传按钮的样式，由于我这个案例是做的修改头像，所以直接就把原来的头像作为了按钮，css可以按照自己的需求自己重写。</p>
-<blockquote>
-<pre><code>&lt;style&gt;
-/* 上传插件按钮样式，可以自己重写 */
-.btn-upload {
-  width: 50px;
-  height: 50px;
-  position: relative;
-  margin-bottom: 10px;
-}
-.btn-upload a {
-  display: block;
-  width: 50px;
-  text-align: center;
-  color: #4c4c4c;
-  background: #fff;
-  border: 1px solid #cecece;
-}
-.btn-upload input {
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: 1;
-  filter: alpha(opacity=0);
-  -moz-opacity: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-&lt;/style&gt;
-</code></pre><h3 id="3-javaScript"><a href="#3-javaScript" class="headerlink" title="3.javaScript:"></a>3.javaScript:</h3><p>JS部分没有什么，就是在页面写参数配置之前，先引入<strong>jquery.uploadView.js</strong>这个插件就好了。参数后面有说明。</p>
-<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;__PUBLIC__/js/jquery.uploadView.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-    $(&quot;.js_upFile&quot;).uploadView({
-        uploadBox: &apos;.js_uploadBox&apos;,//设置上传框容器
-        showBox : &apos;.js_showBox&apos;,//设置显示预览图片的容器
-        width : 50, //预览图片的宽度，单位px
-        height : 50, //预览图片的高度，单位px
-        allowType: [&quot;gif&quot;, &quot;jpeg&quot;, &quot;jpg&quot;, &quot;bmp&quot;, &quot;png&quot;], //允许上传图片的类型
-        maxSize :2, //允许上传图片的最大尺寸，单位M
-        success:function(e){
-            $(&quot;.js_uploadText&quot;).text(&apos;更改&apos;);
-            //上传成功后，反馈的信息，可根据需求进行更改
-        }
-    });
-&lt;/script&gt;
-</code></pre></blockquote>
-<h3 id="4-PHP"><a href="#4-PHP" class="headerlink" title="4.PHP:"></a>4.PHP:</h3><p>最后就是php方法处理前端页面提交上来的图片，然后根据自己的需求，自行处理。</p>
-<blockquote>
-<pre><code>&lt;?php
-if (!empty($_FILES[&apos;cover&apos;][&apos;name&apos;])) {
-        import(&quot;ORG.Net.UploadFile&quot;);
-        $upload = new UploadFile();
-        $upload-&gt;autoSub = true;
-        $upload-&gt;subType = &apos;date&apos;;
-        $upload-&gt;dateFormat = &apos;Ymd&apos;;
-        $upload-&gt;maxSize = 2048000;
-        $upload-&gt;allowExts = array(&apos;jpg&apos;,&apos;jpeg&apos;,&apos;gif&apos;,&apos;png&apos;);
-        $url= &quot;./Uploads/avatar/&quot;;
-        if($upload-&gt;upload($url)){
-            $info = $upload-&gt;getUploadFileInfo();//获取成功信息
-            $info[0][&apos;avatarPath&apos;] = &quot;/Uploads/avatar/&quot;.$info[0][&apos;savename&apos;];
-            // p($info);
-            /*获取图片地址保存数据库*/
-            $user[&apos;cover&apos;] = $info[0][&apos;avatarPath&apos;];
-        } else {
-            $this-&gt;error(&apos;图像上传失败&apos;);
-        }
-    }
-</code></pre></blockquote>
-
-          
+          <h2 id="手机端php上传图片"><a href="#手机端php上传图片" class="headerlink" title="手机端php上传图片"></a>手机端php上传图片</h2><p>这里给大家介绍一款非常实用的JQuery图片上传预览插件<strong>uploadView</strong>，这款插件不仅可以兼容手机和PC，而且代买非常的简介明了。本人就是在项目中，用这款插件来做头像的更改上传的。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/27/PHP手机上传图片更改头像/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
